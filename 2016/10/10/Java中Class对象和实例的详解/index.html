@@ -1,0 +1,908 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="class," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="详解class实例和对象的不同，及获取Class对象的三种方式">
+<meta name="keywords" content="class">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java中Class对象和实例的详解">
+<meta property="og:url" content="http://meson.space/2016/10/10/Java中Class对象和实例的详解/index.html">
+<meta property="og:site_name" content="Meson&#39;s Room">
+<meta property="og:description" content="详解class实例和对象的不同，及获取Class对象的三种方式">
+<meta property="og:updated_time" content="2016-10-11T04:05:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java中Class对象和实例的详解">
+<meta name="twitter:description" content="详解class实例和对象的不同，及获取Class对象的三种方式">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '6325932767859181000',
+      author: '九哥'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://meson.space/2016/10/10/Java中Class对象和实例的详解/"/>
+
+
+
+
+
+  <title>Java中Class对象和实例的详解 | Meson's Room</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?7fa047b947cc3e0d38f847a535d552e5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Meson's Room</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">生命不息  学习不止</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-guestbook">
+          <a href="/guestbook" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-comments"></i> <br />
+            
+            Guestbook
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-mylove">
+          <a href="/mylove" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heart"></i> <br />
+            
+            Mylove
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://meson.space/2016/10/10/Java中Class对象和实例的详解/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Meson">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/meson.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Meson's Room">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Java中Class对象和实例的详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-10-10T15:23:45+08:00">
+                2016-10-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习笔记/" itemprop="url" rel="index">
+                    <span itemprop="name">学习笔记</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/10/10/Java中Class对象和实例的详解/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/10/10/Java中Class对象和实例的详解/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  详解class实例和对象的不同，及获取Class对象的三种方式
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <a id="more"></a>
+<h2 id="Class-对象"><a href="#Class-对象" class="headerlink" title="Class 对象"></a>Class 对象</h2><p>什么叫Class对象？什么又叫实例？Class对象是一个对象，但是它很特殊，是用来创建其他对象（java类的实例）的对象。换句话说，Class对象就是java类编译过后所生成的.class文件，里面含有与类相关的所有信息。<br>实例是通过一般是new关键字调用构造器生成。这里我举个例子来说明一下，我对他的理解。<br>我声明一个Play类</p>
+<p>Play p;//只是声明了一个引用，此时和实例并没有关系。<br>Play p=new Play();//此处new Play创建了一个实例。并且让让对象的引用和实例关联。</p>
+<p>我们知道当我们使用一个类的时候，会有类加载机制把该类的class文件加载到内存。其实更确切的说是第一次创建该类的对象的时候，JVM通过类加载器对该类进行加载。当然我们也能自己获得某个类的class对象。<br><strong>获取Class类的三种方法</strong></p>
+<h3 id="Class-forName-“包名-类名”"><a href="#Class-forName-“包名-类名”" class="headerlink" title="Class.forName(“包名+类名”)"></a>Class.forName(“包名+类名”)</h3><p>这种方式我们只需要知道类的名字就可以创建类的对象。</p>
+<h3 id="类名-class"><a href="#类名-class" class="headerlink" title="类名.class"></a>类名.class</h3><p>它有一个官方的叫法，叫做类字面常量法</p>
+<h3 id="实例对象-getClass"><a href="#实例对象-getClass" class="headerlink" title="实例对象.getClass"></a>实例对象.getClass</h3><p>为了方便对比，我把三种方法写在一个程序里面：<br><strong>三个操作类如下</strong><br><figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> <span class="title">Banana</span> &#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Banana</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Banana 的构造函数"</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">static</span> &#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"静态参数初始化Banana"</span>);</div><div class="line">	&#125;</div><div class="line">	&#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"非静态参数初始化Banana"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">class</span> <span class="title">Grape</span> &#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Grape</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Grape 的构造函数"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="keyword">static</span> &#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"静态参数初始化Grape"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	&#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"非静态参数初始化Grape"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Apple</span> &#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Apple</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"apple 的构造函数"</span>);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">static</span> &#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"静态参数初始化apple"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	&#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"非静态参数初始化apple"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>class对象测试类如下：</strong><br><figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> ClassTest &#123;</div><div class="line">		<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> main(String[] args) &#123;</div><div class="line"></div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			System.out.<span class="keyword">println</span>(<span class="string">"*******Class.forName before***********"</span>);;</div><div class="line">			<span class="keyword">Class</span>&lt;?&gt; cla = <span class="keyword">Class</span>.forName(<span class="string">"classtype.Apple"</span>);</div><div class="line">			System.out.<span class="keyword">println</span>(<span class="string">"class.forname :"</span> + cla);</div><div class="line">		&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">			<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		System.out.<span class="keyword">println</span>(<span class="string">"*******Class.forName after***********"</span>);</div><div class="line"></div><div class="line">		System.out.<span class="keyword">println</span>(<span class="string">"********.class before**********"</span>);</div><div class="line">		<span class="keyword">Class</span>&lt;?&gt; banana = Banana.<span class="keyword">class</span>;</div><div class="line">		System.out.<span class="keyword">println</span>(<span class="string">"banana: "</span> + banana);</div><div class="line">		System.out.<span class="keyword">println</span>(<span class="string">"**********.class after********"</span>);</div><div class="line">		System.out.<span class="keyword">println</span>(<span class="string">"**********.getclass before********"</span>);</div><div class="line">		Grape grape = <span class="keyword">new</span> Grape();</div><div class="line">		System.out.<span class="keyword">println</span>(<span class="string">"grape: "</span> + grape.getClass());</div><div class="line">		System.out.<span class="keyword">println</span>(<span class="string">"*********.getclass after*********"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>控制台输出如下：</strong><br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="strong">*****</span><span class="strong">**Class.forName before**</span><span class="strong">*****</span><span class="emphasis">***</span>*</div><div class="line">静态参数初始化Apple</div><div class="line">class.forname :class classtype.Apple</div><div class="line"><span class="strong">*****</span><span class="strong">**Class.foName after**</span><span class="strong">*****</span><span class="emphasis">***</span>*</div><div class="line"><span class="strong">*****</span><span class="strong">***.class before**</span><span class="strong">*****</span><span class="emphasis">***</span></div><div class="line">banana: class classtype.Banana</div><div class="line"><span class="strong">*****</span><span class="strong">*****</span>.class after<span class="strong">*****</span><span class="emphasis">***</span></div><div class="line"><span class="strong">*****</span><span class="strong">*****</span>.getclass before<span class="strong">*****</span><span class="emphasis">***</span></div><div class="line">静态参数初始化Grape</div><div class="line">非静态参数初始化Grape</div><div class="line">Grape 的构造函数</div><div class="line">grape: class classtype.Grape</div><div class="line"><span class="strong">*****</span><span class="strong">****.getclass after**</span><span class="strong">*****</span>**</div></pre></td></tr></table></figure></p>
+<p>由输出可以看出，只有class.forName和getClass打印了一次静态初始化语句，而.class并没有加载Banana的静态初始化，我们知道static的初始化时跟随类的加载而加载的，所以说这里Banana类没有进行加载。所以类字面常量法创建Class对象时时不会自动初始化该Class对象。<br>Class.forName只是初始化了类的静态模块，并未调用构造函数或者初始化类的费静态模块。而实例对象.getClass因为它要先产生实例对象，所以在这个过程会对类的静态模块、非静态模块、参数初始化（调用构造函数）。<br>由以上结果我们可以看到类字面常量法并没有对类进行加载，更谈不上初始化了。如果用这种方法想实现类的加载和初始化，可以使用newInstance()方法。可以生成一个实例等同于new一个对象。<br><strong>程序如下：</strong><br><figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> <span class="title">Banana</span> &#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Banana</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Banana 的构造函数"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="keyword">static</span> &#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"静态参数初始化Banana"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	&#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"非静态参数初始化Banana"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">	测试类如下</div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ClassTest</span> &#123;</div><div class="line">		<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</div><div class="line">	</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"********.class before**********"</span>);</div><div class="line">		Class&lt;?&gt; banana = Banana.class;</div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			Object  ba=banana.newInstance();</div><div class="line">			System.<span class="keyword">out</span>.println(<span class="string">"banana: "</span> + ba);</div><div class="line">		&#125; <span class="keyword">catch</span> (InstantiationException e) &#123;</div><div class="line">			<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">			e.printStackTrace();</div><div class="line">		&#125; <span class="keyword">catch</span> (IllegalAccessException e) &#123;</div><div class="line">			<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"**********.class after********"</span>);</div><div class="line">		&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>控制台输出如下：</strong><br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="strong">*****</span><span class="strong">***.class before**</span><span class="strong">*****</span><span class="emphasis">***</span></div><div class="line">静态参数初始化Banana</div><div class="line">非静态参数初始化Banana</div><div class="line">Banana 的构造函数</div><div class="line">banana: classtype.Banana@2a163765</div><div class="line"><span class="strong">*****</span><span class="strong">*****</span>.class after<span class="strong">*****</span><span class="emphasis">***</span></div></pre></td></tr></table></figure></p>
+<p>我们来看看这三种方法对同一个类操作会产生什么样的结果呢？<br><strong>看如下程序：</strong><br><figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">Apple</span> &#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Apple</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"Apple 的构造函数"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	<span class="keyword">static</span> &#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"静态参数初始化Apple"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	&#123;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"非静态参数初始化Apple"</span>);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	</div><div class="line">&#125;</div><div class="line">	测试类如下：</div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">ClassTest</span> &#123;</div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span>(<span class="params">String[] args</span>) </span>&#123;</div><div class="line"></div><div class="line">		<span class="keyword">try</span> &#123;</div><div class="line">			System.<span class="keyword">out</span>.println(<span class="string">"*******Class.forName before***********"</span>);</div><div class="line">			Class&lt;?&gt; cla = Class.forName(<span class="string">"classtype.Apple"</span>);</div><div class="line">			System.<span class="keyword">out</span>.println(<span class="string">"Class.forName :"</span> + cla);</div><div class="line">		&#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</div><div class="line">			<span class="comment">// TODO Auto-generated catch block</span></div><div class="line">			e.printStackTrace();</div><div class="line">		&#125;</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"*******Class.forName after***********"</span>);</div><div class="line"></div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"********.class before**********"</span>);</div><div class="line">		Class&lt;?&gt; apple = Apple.class;</div><div class="line">		</div><div class="line">			System.<span class="keyword">out</span>.println(<span class="string">"Apple: "</span> + apple);</div><div class="line">		</div><div class="line">		</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"**********.class after********"</span>);</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"**********.getclass before********"</span>);</div><div class="line">		Apple apple1 = <span class="keyword">new</span> Apple();</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"apple: "</span> + apple1.getClass());</div><div class="line">		System.<span class="keyword">out</span>.println(<span class="string">"*********.getclass after*********"</span>);</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><strong>控制台输出：</strong><br><figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="strong">*****</span><span class="strong">**Class.forName before**</span><span class="strong">*****</span><span class="emphasis">***</span>*</div><div class="line">静态参数初始化Apple</div><div class="line">Class.forName :class classtype.Apple</div><div class="line"><span class="strong">*****</span><span class="strong">**Class.forName after**</span><span class="strong">*****</span><span class="emphasis">***</span>*</div><div class="line"><span class="strong">*****</span><span class="strong">***.class before**</span><span class="strong">*****</span><span class="emphasis">***</span></div><div class="line">Apple: class classtype.Apple</div><div class="line"><span class="strong">*****</span><span class="strong">*****</span>.class after<span class="strong">*****</span><span class="emphasis">***</span></div><div class="line"><span class="strong">*****</span><span class="strong">*****</span>.getclass before<span class="strong">*****</span><span class="emphasis">***</span></div><div class="line">非静态参数初始化Apple</div><div class="line">Apple 的构造函数</div><div class="line">apple: class classtype.Apple</div><div class="line"><span class="strong">*****</span><span class="strong">****.getclass after**</span><span class="strong">*****</span>**</div></pre></td></tr></table></figure></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>使用Class.forName加载类的时候，静态的模块属性会被初始化，至于非静态模块在new对象实例时才会被初始化。但是我们可以看出new实例对象时并有再次打印静态模块，也就是说此时没有对静态模块进行加载。为什么呢？因为这和类的加载机制有关系当类进行加载的时候，JVM会对该类的class对象进行加载检测，如果已经加载了，就不再加载，如果没有被加载，则通过类加载器进行加载。前面Class.forName已经加载class对象，所以后面new实例对象时就不会再次加载class对象。而静态模块的加载时随着类的加载而加载的。所以才会有一行结果。.class的从结果来看没有对类进行初始化，我们也可以换个说法.class的初始化被延迟到了对静态方法或者非静态方法的首次引用时才执行。另外我们可以看出这三种方式其实就生成了一个Class对象。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/class/" rel="tag"># class</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/10/08/Java之代理篇/" rel="next" title="Java之代理篇">
+                <i class="fa fa-chevron-left"></i> Java之代理篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/11/18/URL和URI区别/" rel="prev" title="URL和URI区别">
+                URL和URI区别 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+  <p>热评文章</p>
+  <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/10/10/Java中Class对象和实例的详解/"
+           data-title="Java中Class对象和实例的详解" data-url="http://meson.space/2016/10/10/Java中Class对象和实例的详解/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/meson.jpg"
+               alt="Meson" />
+          <p class="site-author-name" itemprop="name">Meson</p>
+           
+              <p class="site-description motion-element" itemprop="description">love life   enjoy coding</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">15</span>
+                <span class="site-state-item-name">posts</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">categories</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">20</span>
+                <span class="site-state-item-name">tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Meson-Guo" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.zhihu.com/people/meson.guo" target="_blank" title="ZhiHu">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  ZhiHu
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://blog.csdn.net/gzq1108" target="_blank" title="CSDN">
+                  
+                    <i class="fa fa-fw fa-graduation-cap"></i>
+                  
+                  CSDN
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.linkedin.com/in/%E4%B8%AD%E6%9D%83-%E9%83%AD-252651128?trk=nav_responsive_tab_profile_pic" target="_blank" title="Linkedin">
+                  
+                    <i class="fa fa-fw fa-linkedin"></i>
+                  
+                  Linkedin
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://theme-next.iissnan.com" title="Next" target="_blank">Next</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://hexo.io" title="Hexo" target="_blank">Hexo</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="https://home.cnblogs.com/u/shuyzhou" title="Big_Zhou" target="_blank">Big_Zhou</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://www.iamlj.com" title="Jing'sBlog" target="_blank">Jing'sBlog</a>
+                </li>
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://ehlxr.me" title="一个程序员之家" target="_blank">一个程序员之家</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Class-对象"><span class="nav-number">1.</span> <span class="nav-text">Class 对象</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-forName-“包名-类名”"><span class="nav-number">1.1.</span> <span class="nav-text">Class.forName(“包名+类名”)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类名-class"><span class="nav-number">1.2.</span> <span class="nav-text">类名.class</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例对象-getClass"><span class="nav-number">1.3.</span> <span class="nav-text">实例对象.getClass</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span id="busuanzi_container_site_pv" style='display:none'>
+    本站被访问 <span id="busuanzi_value_site_pv"></span> 次
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Meson</span>
+</div>
+
+
+<div class="powered-by">
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"meson"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+   
+<a href="https://github.com/Meson-Guo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+</body>
+</html>
